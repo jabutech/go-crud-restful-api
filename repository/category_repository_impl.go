@@ -51,7 +51,7 @@ func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx
 }
 
 // Function Delete with follow the contract category repository
-func (repository CategoryRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, category domain.Category) string {
+func (repository *CategoryRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, category domain.Category) string {
 	// (1) Create sql query
 	SQL := "delete from category where id = ?"
 
@@ -66,7 +66,7 @@ func (repository CategoryRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx,
 }
 
 // Function Find data by id with follow the contract category repository
-func (repository CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, categoryId int) (domain.Category, error) {
+func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, categoryId int) (domain.Category, error) {
 	// (1) Create sql query
 	SQL := "select id, name from category where id = ?"
 
@@ -93,4 +93,35 @@ func (repository CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.T
 		// If category is empty, return category and send info error
 		return category, errors.New("category is not found")
 	}
+}
+
+// Function Find all data with follow the contract category repository
+func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Category {
+	// (1) Create sql query
+	SQL := "select id, name from category"
+
+	// (2) Create query context
+	rows, err := tx.QueryContext(ctx, SQL)
+
+	// (3) If error, handle with helper error
+	helper.PanicErr(err)
+
+	// (4) Create var category with value slice domain category
+	var categories []domain.Category
+
+	// (5) If category is available
+	for rows.Next() {
+		// (1) Create var category with strucy domain category
+		category := domain.Category{}
+		err := rows.Scan(&category.Id, &category.Name)
+
+		// (2) If error, handle with helper error
+		helper.PanicErr(err)
+
+		// (3) If no error, insert all data to var categories
+		categories = append(categories, category)
+	}
+
+	// (6) return all data category
+	return categories
 }
