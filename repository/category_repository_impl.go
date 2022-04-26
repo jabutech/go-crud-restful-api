@@ -33,3 +33,18 @@ func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, 
 	// (7) Return category
 	return category
 }
+
+// Function Update with follow the contract category repository
+func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
+	// (1) Create sql query
+	SQL := "update category set name = ? where id = ?"
+
+	// (2) Create context
+	_, err := tx.ExecContext(ctx, SQL, category.Name, category.Id)
+
+	// (3) If error, handler with helper error
+	helper.PanicErr(err)
+
+	// (4) If success, return category
+	return category
+}
