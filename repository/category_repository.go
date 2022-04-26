@@ -9,13 +9,13 @@ import (
 // Contract for repository category
 type CategoryRespository interface {
 	// Contract function Save for insert data
-	Save(ctx context.Context, tx sql.Tx, category domain.Category) domain.Category
+	Save(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category
 	// Contract function Update for update data
-	Update(ctx context.Context, tx sql.Tx, category domain.Category) domain.Category
+	Update(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category
 	// Contract function Delete for delete data
-	Delete(ctx context.Context, tx sql.Tx, category domain.Category)
+	Delete(ctx context.Context, tx *sql.Tx, category domain.Category)
 	// Contract function FindId for find data based on id
-	FindById(ctx context.Context, tx sql.Tx, categoryId int) domain.Category
+	FindById(ctx context.Context, tx *sql.Tx, categoryId int) domain.Category
 	// Contract function FindAll for find all data
-	FindAll(ctx context.Context, tx sql.Tx) []domain.Category
+	FindAll(ctx context.Context, tx *sql.Tx) []domain.Category
 }
