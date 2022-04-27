@@ -7,7 +7,7 @@ import (
 )
 
 // Contract for repository category
-type CategoryRespository interface {
+type CategoryRepository interface {
 	// Contract function Save for insert data
 	Save(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category
 	// Contract function Update for update data
