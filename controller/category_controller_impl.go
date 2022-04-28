@@ -123,7 +123,7 @@ func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, r
 	// (3) If error, handle with helper
 	helper.PanicErr(err)
 
-	// (5) Delete category use service Delete
+	// (5) FindById category use service FindById
 	webResponse := controller.CategoryService.FindById(request.Context(), id)
 
 	// (6) If success, create response with helper web response
@@ -139,6 +139,28 @@ func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, r
 	encoder := json.NewEncoder(writer)
 	// (9) Encode web response
 	err = encoder.Encode(webWebResponse)
+	// (10) If error, handle with helper
+	helper.PanicErr(err)
+
+}
+
+func (controller *CategoryControllerImpl) FindAll(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	// (1) Delete category use service Delete
+	webResponses := controller.CategoryService.FindAll(request.Context())
+
+	// (6) If success, create response with helper web response
+	webWebResponse := web.WebResponse{
+		Code:   http.StatusOK,
+		Status: "Ok",
+		Data:   webResponses,
+	}
+
+	// (7) Add header
+	writer.Header().Add("Content-Type", "application/json")
+	// (8) Create encode
+	encoder := json.NewEncoder(writer)
+	// (9) Encode web response
+	err := encoder.Encode(webWebResponse)
 	// (10) If error, handle with helper
 	helper.PanicErr(err)
 
