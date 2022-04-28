@@ -16,14 +16,10 @@ type CategoryControllerImpl struct {
 }
 
 func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	// (1) Decode request
-	decoder := json.NewDecoder(request.Body)
-	// (2) Create variable with value web.CategoryCreateRequest{
+	// (1) Create variable with value web.CategoryCreateRequest
 	categoryCreateRequest := web.CategoryCreateRequest{}
-	// (3) Decode request to category request struct
-	err := decoder.Decode(&categoryCreateRequest)
-	// (4) If error, handle with helper
-	helper.PanicErr(err)
+	// (2) Decode with helper
+	helper.ReadFromRequestBody(request, &categoryCreateRequest)
 
 	// (5) Create new category use service Create
 	categoryResponse := controller.CategoryService.Create(request.Context(), categoryCreateRequest)
