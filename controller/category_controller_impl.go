@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"encoding/json"
 	"go-restful-api/helper"
 	"go-restful-api/model/web"
 	"go-restful-api/service"
@@ -18,68 +17,52 @@ type CategoryControllerImpl struct {
 func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	// (1) Create variable with value web.CategoryCreateRequest
 	categoryCreateRequest := web.CategoryCreateRequest{}
-	// (2) Decode with helper
+	// (2) Decode with helper ReadFromRequestBody
 	helper.ReadFromRequestBody(request, &categoryCreateRequest)
 
-	// (5) Create new category use service Create
+	// (3) Create new category use service Create
 	categoryResponse := controller.CategoryService.Create(request.Context(), categoryCreateRequest)
 
-	// (6) If success, create response with helper web response
-	webWebResponse := web.WebResponse{
+	// (4) If success, create response with helper web response
+	webResponse := web.WebResponse{
 		Code:   http.StatusOK,
 		Status: "Ok",
 		Data:   categoryResponse,
 	}
 
-	// (7) Add header
-	writer.Header().Add("Content-Type", "application/json")
-	// (8) Create encode
-	encoder := json.NewEncoder(writer)
-	// (9) Encode web response
-	err = encoder.Encode(webWebResponse)
-	// (10) If error, handle with helper
-	helper.PanicErr(err)
+	// (5) Encode response with helper WriteToResponseBody
+	helper.WriteToResponseBody(writer, webResponse)
 
 }
 
 func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	// (1) Decode request
-	decoder := json.NewDecoder(request.Body)
-	// (2) Create variable with value web.CategoryUpdateRequest{
+	// (1) Create variable with value web.CategoryUpdateRequest{
 	categoryUpdateRequest := web.CategoryUpdateRequest{}
-	// (3) Decode request to category request struct
-	err := decoder.Decode(&categoryUpdateRequest)
-	// (4) If error, handle with helper
-	helper.PanicErr(err)
+	// (3) Decode with helper ReadFromRequestBody
+	helper.ReadFromRequestBody(request, &categoryUpdateRequest)
 
-	// (5) Get parameter id
+	// (4) Get parameter id
 	categoryId := params.ByName("categoryId")
-	// (6) Convert to string
+	// (5) Convert to string
 	id, err := strconv.Atoi(categoryId)
-	// (7) If error, handle with helper
+	// (6) If error, handle with helper
 	helper.PanicErr(err)
 
-	// (8) Parse parameter id to categoryUpdateRequest
+	// (7) Parse parameter id to categoryUpdateRequest
 	categoryUpdateRequest.Id = id
 
-	// (5) Update category use service Update
+	// (8) Update category use service Update
 	categoryResponse := controller.CategoryService.Update(request.Context(), categoryUpdateRequest)
 
-	// (6) If success, create response with helper web response
-	webWebResponse := web.WebResponse{
+	// (9) If success, create response with helper web response
+	webResponse := web.WebResponse{
 		Code:   http.StatusOK,
 		Status: "Ok",
 		Data:   categoryResponse,
 	}
 
-	// (7) Add header
-	writer.Header().Add("Content-Type", "application/json")
-	// (8) Create encode
-	encoder := json.NewEncoder(writer)
-	// (9) Encode web response
-	err = encoder.Encode(webWebResponse)
-	// (10) If error, handle with helper
-	helper.PanicErr(err)
+	// (10) Encode response with helper WriteToResponseBody
+	helper.WriteToResponseBody(writer, webResponse)
 
 }
 
@@ -95,19 +78,13 @@ func (controller *CategoryControllerImpl) Delete(writer http.ResponseWriter, req
 	controller.CategoryService.Delete(request.Context(), id)
 
 	// (6) If success, create response with helper web response
-	webWebResponse := web.WebResponse{
+	webResponse := web.WebResponse{
 		Code:   http.StatusOK,
 		Status: "Ok",
 	}
 
-	// (7) Add header
-	writer.Header().Add("Content-Type", "application/json")
-	// (8) Create encode
-	encoder := json.NewEncoder(writer)
-	// (9) Encode web response
-	err = encoder.Encode(webWebResponse)
-	// (10) If error, handle with helper
-	helper.PanicErr(err)
+	// (7) Encode response with helper WriteToResponseBody
+	helper.WriteToResponseBody(writer, webResponse)
 
 }
 
@@ -120,23 +97,17 @@ func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, r
 	helper.PanicErr(err)
 
 	// (5) FindById category use service FindById
-	webResponse := controller.CategoryService.FindById(request.Context(), id)
+	categoryResponse := controller.CategoryService.FindById(request.Context(), id)
 
 	// (6) If success, create response with helper web response
-	webWebResponse := web.WebResponse{
+	webResponse := web.WebResponse{
 		Code:   http.StatusOK,
 		Status: "Ok",
-		Data:   webResponse,
+		Data:   categoryResponse,
 	}
 
-	// (7) Add header
-	writer.Header().Add("Content-Type", "application/json")
-	// (8) Create encode
-	encoder := json.NewEncoder(writer)
-	// (9) Encode web response
-	err = encoder.Encode(webWebResponse)
-	// (10) If error, handle with helper
-	helper.PanicErr(err)
+	// (7) Encode response with helper WriteToResponseBody
+	helper.WriteToResponseBody(writer, webResponse)
 
 }
 
@@ -145,19 +116,13 @@ func (controller *CategoryControllerImpl) FindAll(writer http.ResponseWriter, re
 	webResponses := controller.CategoryService.FindAll(request.Context())
 
 	// (6) If success, create response with helper web response
-	webWebResponse := web.WebResponse{
+	webResponse := web.WebResponse{
 		Code:   http.StatusOK,
 		Status: "Ok",
 		Data:   webResponses,
 	}
 
-	// (7) Add header
-	writer.Header().Add("Content-Type", "application/json")
-	// (8) Create encode
-	encoder := json.NewEncoder(writer)
-	// (9) Encode web response
-	err := encoder.Encode(webWebResponse)
-	// (10) If error, handle with helper
-	helper.PanicErr(err)
+	// (7) Encode response with helper WriteToResponseBody
+	helper.WriteToResponseBody(writer, webResponse)
 
 }
