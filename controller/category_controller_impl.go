@@ -90,9 +90,9 @@ func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, req
 func (controller *CategoryControllerImpl) Delete(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	// (1) Get parameter id
 	categoryId := params.ByName("categoryId")
-	// (1) Convert to string
+	// (2) Convert to string
 	id, err := strconv.Atoi(categoryId)
-	// (1) If error, handle with helper
+	// (3) If error, handle with helper
 	helper.PanicErr(err)
 
 	// (5) Delete category use service Delete
@@ -118,9 +118,9 @@ func (controller *CategoryControllerImpl) Delete(writer http.ResponseWriter, req
 func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	// (1) Get parameter id
 	categoryId := params.ByName("categoryId")
-	// (1) Convert to string
+	// (2) Convert to string
 	id, err := strconv.Atoi(categoryId)
-	// (1) If error, handle with helper
+	// (3) If error, handle with helper
 	helper.PanicErr(err)
 
 	// (5) Delete category use service Delete
