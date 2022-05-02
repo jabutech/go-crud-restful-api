@@ -11,6 +11,10 @@ import (
 type CategoryRepositoryImpl struct {
 }
 
+func NewCategoriRepository() CategoryRepository {
+	return &CategoryRepositoryImpl{}
+}
+
 // Function Save with follow the contract category repository
 func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
 	// (1) Create sql query

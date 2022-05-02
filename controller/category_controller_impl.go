@@ -14,6 +14,12 @@ type CategoryControllerImpl struct {
 	CategoryService service.CategoryService // Use category service
 }
 
+func NewCategoryController(categorySevice service.CategoryService) CategoryController {
+	return &CategoryControllerImpl{
+		CategoryService: categorySevice,
+	}
+}
+
 func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	// (1) Create variable with value web.CategoryCreateRequest
 	categoryCreateRequest := web.CategoryCreateRequest{}

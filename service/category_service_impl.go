@@ -8,13 +8,21 @@ import (
 	"go-restful-api/model/web"
 	"go-restful-api/repository"
 
-	"github.com/go-playground/validator"
+	"github.com/go-playground/validator/v10"
 )
 
 type CategoryServiceImpl struct {
 	CategoryRepository repository.CategoryRepository // Use repository
 	DB                 *sql.DB                       // Use Sql driver
 	Validate           *validator.Validate           // Use validator
+}
+
+func NewCategoryService(categoryRepository repository.CategoryRepository, DB *sql.DB, validate *validator.Validate) CategoryService {
+	return &CategoryServiceImpl{
+		CategoryRepository: categoryRepository,
+		DB:                 DB,
+		Validate:           validate,
+	}
 }
 
 // Function service for proses create new category
