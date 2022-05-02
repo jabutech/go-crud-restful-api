@@ -80,10 +80,13 @@ func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.
 	// (3) If error, handle with helper error
 	helper.PanicErr(err)
 
-	// (4) Create variable category with value struct domain category
+	// (4) Close rows after use
+	defer rows.Close()
+
+	// (5) Create variable category with value struct domain category
 	category := domain.Category{}
 
-	// (5) If category is available
+	// (6) If category is available
 	if rows.Next() {
 		// (1) Get data category
 		err := rows.Scan(&category.Id, &category.Name)
@@ -110,10 +113,13 @@ func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.T
 	// (3) If error, handle with helper error
 	helper.PanicErr(err)
 
-	// (4) Create var category with value slice domain category
+	// (4) Close rows after use
+	defer rows.Close()
+
+	// (5) Create var category with value slice domain category
 	var categories []domain.Category
 
-	// (5) If category is available
+	// (6) If category is available
 	for rows.Next() {
 		// (1) Create var category with strucy domain category
 		category := domain.Category{}
@@ -126,6 +132,6 @@ func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.T
 		categories = append(categories, category)
 	}
 
-	// (6) return all data category
+	// (7) return all data category
 	return categories
 }
