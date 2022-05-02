@@ -18,7 +18,7 @@ func NewCategoriRepository() CategoryRepository {
 // Function Save with follow the contract category repository
 func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
 	// (1) Create sql query
-	SQL := "insert into customer(name) valus (?)"
+	SQL := "insert into category(name) values (?)"
 
 	// (2) Create context
 	result, err := tx.ExecContext(ctx, SQL, category.Name)
