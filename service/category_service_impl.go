@@ -9,7 +9,7 @@ import (
 	"go-restful-api/model/web"
 	"go-restful-api/repository"
 
-	"github.com/go-playground/validator/v10"
+	"github.com/go-playground/validator"
 )
 
 type CategoryServiceImpl struct {

@@ -9,7 +9,7 @@ import (
 	"go-restful-api/service"
 	"net/http"
 
-	"github.com/go-playground/validator/v10"
+	"github.com/go-playground/validator"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/julienschmidt/httprouter"
 )
