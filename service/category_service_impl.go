@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"database/sql"
+	"go-restful-api/exception"
 	"go-restful-api/helper"
 	"go-restful-api/model/domain"
 	"go-restful-api/model/web"
@@ -69,8 +70,10 @@ func (service *CategoryServiceImpl) Update(ctx context.Context, request web.Cate
 	// (6) Find category in dataabase
 	category, err := service.CategoryRepository.FindById(ctx, tx, request.Id)
 
-	// (7) If error / category not found handle error with helper
-	helper.PanicErr(err)
+	// (7) If error / category not found handle error with exception not found
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	// (8) If no error, set request name to object category
 	category.Name = request.Name
@@ -94,8 +97,10 @@ func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryId int) 
 	// (2) Find category by id with use Repository
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
 
-	//  (3) If error / category not found handle error with helper
-	helper.PanicErr(err)
+	//  (3) If error / category not found handle error with exception
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	// (4) If no error, Delete category
 	service.CategoryRepository.Delete(ctx, tx, category)
@@ -113,8 +118,10 @@ func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int
 	// (2) Find category by id with use Repository
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
 
-	//  (3) If error / category not found handle error with helper
-	helper.PanicErr(err)
+	//  (3) If error / category not found handle error with exception
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	// (4) If no error, Return category
 	return helper.ToCategoryResponse(category)
