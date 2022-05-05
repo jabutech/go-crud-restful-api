@@ -17,7 +17,7 @@ import (
 // Function setup for connection to database test
 func setupTestDB() *sql.DB {
 	// (1) Open connection to database
-	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/belajar_restful_golang")
+	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/belajar_restful_golang_test")
 	// (2) If error handle with helper
 	helper.PanicErr(err)
 
