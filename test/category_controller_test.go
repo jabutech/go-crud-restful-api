@@ -1,17 +1,20 @@
 package test
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
 	"go-restful-api/app"
 	"go-restful-api/controller"
 	"go-restful-api/helper"
 	"go-restful-api/middleware"
+	"go-restful-api/model/domain"
 	"go-restful-api/repository"
 	"go-restful-api/service"
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -142,4 +145,63 @@ func TestCreateCategoryFailed(t *testing.T) {
 	assert.Equal(t, 400, int(responseBody["code"].(float64)))
 	// (16) Check response status must be `OK`
 	assert.Equal(t, "BAD REQUEST", responseBody["status"])
+}
+
+// Function test for update category success
+func TestUpdateCategorySuccess(t *testing.T) {
+	// (1) Use connetion to db
+	db := setupTestDB()
+	// (2) Run truncate table category before test
+	truncateCategory(db)
+
+	// (3) Create new data for sample update
+	// (3.1) Create database transactional
+	tx, _ := db.Begin()
+	// (3.2) Use repository
+	categoryRepository := repository.NewCategoriRepository()
+	// (3.3) Create new category
+	category := categoryRepository.Save(context.Background(), tx, domain.Category{
+		Name: "Gadget",
+	})
+	// (3.4) Commit transaction
+	tx.Commit()
+
+	// (4) Use router
+	router := setupRouter(db)
+
+	// (4) Create request body payload update
+	requestBody := strings.NewReader(`{"name": "T SHIRT"}`)
+	// (5) Create test request update with id
+	request := httptest.NewRequest(http.MethodPut, "http://localhost:3000/api/categories/"+strconv.Itoa(category.Id), requestBody)
+	// (6) Added header content type
+	request.Header.Add("Content-Type", "application/json")
+	// (7) Added header authorize
+	request.Header.Add("X-API-Key", "RAHASIA")
+
+	// (8) Create new recorder for writer
+	recorder := httptest.NewRecorder()
+
+	// (9) Run test with send request
+	router.ServeHTTP(recorder, request)
+
+	// (10) Get result test and save to variable response
+	response := recorder.Result()
+
+	// (11) Read response body json
+	body, _ := io.ReadAll(response.Body)
+	// (12) Create variable responseBody with value map for response body
+	var responseBody map[string]interface{}
+	// (13) Decode json
+	json.Unmarshal(body, &responseBody)
+
+	// (14) Response status code must be 200 (success)
+	assert.Equal(t, 200, response.StatusCode)
+	// (15) Check response body code must be 200 (success)
+	assert.Equal(t, 200, int(responseBody["code"].(float64)))
+	// (16) Check response status must be `OK`
+	assert.Equal(t, "OK", responseBody["status"])
+	// (17) Check response data id must be same as the id above, and convert to type map
+	assert.Equal(t, category.Id, int(responseBody["data"].(map[string]interface{})["id"].(float64)))
+	// (17) Check response data name must be gadget, and convert to type map
+	assert.Equal(t, "T SHIRT", responseBody["data"].(map[string]interface{})["name"])
 }
