@@ -3,7 +3,6 @@ package main
 import (
 	"go-restful-api/app"
 	"go-restful-api/controller"
-	"go-restful-api/exception"
 	"go-restful-api/helper"
 	"go-restful-api/middleware"
 	"go-restful-api/repository"
@@ -12,7 +11,6 @@ import (
 
 	"github.com/go-playground/validator"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/julienschmidt/httprouter"
 )
 
 func main() {
@@ -26,23 +24,8 @@ func main() {
 	categoryService := service.NewCategoryService(categoryRespository, db, validate)
 	categoryController := controller.NewCategoryController(categoryService)
 
-	// Use http router
-	router := httprouter.New()
-
-	// Endpoint
-	// Get all categories
-	router.GET("/api/categories", categoryController.FindAll)
-	// Get category by id
-	router.GET("/api/categories/:categoryId", categoryController.FindById)
-	// Create new category
-	router.POST("/api/categories", categoryController.Create)
-	// Update category by id
-	router.PUT("/api/categories/:categoryId", categoryController.Update)
-	// Delete category by id
-	router.DELETE("/api/categories/:categoryId", categoryController.Delete)
-
-	// Change PanicHandler to exception error hanlder
-	router.PanicHandler = exception.ErrorHandler
+	// Use file router
+	router := app.NewRouter(categoryController)
 
 	// Create server
 	server := http.Server{
