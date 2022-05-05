@@ -92,10 +92,54 @@ func TestCreateCategorySuccess(t *testing.T) {
 	// (13) Decode json
 	json.Unmarshal(body, &responseBody)
 
-	// (14) Check response code must be 200
+	// (14) Response status code must be 200 (success)
+	assert.Equal(t, 200, response.StatusCode)
+	// (15) Check response body code must be 200 (success)
 	assert.Equal(t, 200, int(responseBody["code"].(float64)))
-	// (15) Check response status must be `OK`
+	// (16) Check response status must be `OK`
 	assert.Equal(t, "OK", responseBody["status"])
-	// (16) Check response data must be gadget, and convert to type map
+	// (17) Check response data must be gadget, and convert to type map
 	assert.Equal(t, "Gadget", responseBody["data"].(map[string]interface{})["name"])
+}
+
+// Function test for create category failed
+func TestCreateCategoryFailed(t *testing.T) {
+	// (1) Use connetion to db
+	db := setupTestDB()
+	// (2) Run truncate table category before test
+	truncateCategory(db)
+	// (3) Use router
+	router := setupRouter(db)
+
+	// (4) Create request body payload
+	requestBody := strings.NewReader(`{"name": ""}`)
+	// (5) Create test request
+	request := httptest.NewRequest(http.MethodPost, "http://localhost:3000/api/categories", requestBody)
+	// (6) Added header content type
+	request.Header.Add("Content-Type", "application/json")
+	// (7) Added header authorize
+	request.Header.Add("X-API-Key", "RAHASIA")
+
+	// (8) Create new recorder for writer
+	recorder := httptest.NewRecorder()
+
+	// (9) Run test with send request
+	router.ServeHTTP(recorder, request)
+
+	// (10) Get result test and save to variable response
+	response := recorder.Result()
+
+	// (11) Read response body json
+	body, _ := io.ReadAll(response.Body)
+	// (12) Create variable responseBody with value map for response body
+	var responseBody map[string]interface{}
+	// (13) Decode json
+	json.Unmarshal(body, &responseBody)
+
+	// (14) Response status code must be 400 (bad request)
+	assert.Equal(t, 400, response.StatusCode)
+	// (15) Check response body code must be 400 (bad request)
+	assert.Equal(t, 400, int(responseBody["code"].(float64)))
+	// (16) Check response status must be `OK`
+	assert.Equal(t, "BAD REQUEST", responseBody["status"])
 }
