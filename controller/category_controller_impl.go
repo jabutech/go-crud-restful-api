@@ -32,7 +32,7 @@ func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, req
 	// (4) If success, create response with helper web response
 	webResponse := web.WebResponse{
 		Code:   http.StatusOK,
-		Status: "Ok",
+		Status: "OK",
 		Data:   categoryResponse,
 	}
 
@@ -63,7 +63,7 @@ func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, req
 	// (9) If success, create response with helper web response
 	webResponse := web.WebResponse{
 		Code:   http.StatusOK,
-		Status: "Ok",
+		Status: "OK",
 		Data:   categoryResponse,
 	}
 
@@ -86,7 +86,7 @@ func (controller *CategoryControllerImpl) Delete(writer http.ResponseWriter, req
 	// (6) If success, create response with helper web response
 	webResponse := web.WebResponse{
 		Code:   http.StatusOK,
-		Status: "Ok",
+		Status: "OK",
 	}
 
 	// (7) Encode response with helper WriteToResponseBody
@@ -108,7 +108,7 @@ func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, r
 	// (6) If success, create response with helper web response
 	webResponse := web.WebResponse{
 		Code:   http.StatusOK,
-		Status: "Ok",
+		Status: "OK",
 		Data:   categoryResponse,
 	}
 
@@ -124,7 +124,7 @@ func (controller *CategoryControllerImpl) FindAll(writer http.ResponseWriter, re
 	// (6) If success, create response with helper web response
 	webResponse := web.WebResponse{
 		Code:   http.StatusOK,
-		Status: "Ok",
+		Status: "OK",
 		Data:   webResponses,
 	}
 
