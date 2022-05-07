@@ -510,11 +510,53 @@ func TestGetListCategorySuccess(t *testing.T) {
 	categoryResponse2 := categories[1].(map[string]interface{})
 	// (19) Check id response 1 must be the same with category id 1
 	assert.Equal(t, category1.Id, int(categoryResponse1["id"].(float64)))
-	// (19) Check name response 1 must be the same with category name 1
+	// (20) Check name response 1 must be the same with category name 1
 	assert.Equal(t, category1.Name, categoryResponse1["name"])
-	// (19) Check id response 2 must be the same with category id 2
+	// (21) Check id response 2 must be the same with category id 2
 	assert.Equal(t, category2.Id, int(categoryResponse2["id"].(float64)))
-	// (19) Check name response 2 must be the same with category name 2
+	// (22) Check name response 2 must be the same with category name 2
 	assert.Equal(t, category2.Name, categoryResponse2["name"])
+
+}
+
+// Function test for unauthorized
+func TestUnauthorized(t *testing.T) {
+	// (1) Use connetion to db
+	db := setupTestDB()
+	// (2) Run truncate table category before test
+	truncateCategory(db)
+
+	// (4) Use router
+	router := setupRouter(db)
+
+	// (5) Create test request get all categories
+	request := httptest.NewRequest(http.MethodGet, "http://localhost:3000/api/categories", nil)
+	// (6) Added header content type
+	request.Header.Add("Content-Type", "application/json")
+	// (7) Added header wrong authorized API Key
+	request.Header.Add("X-API-Key", "SALAH")
+
+	// (8) Create new recorder for writer
+	recorder := httptest.NewRecorder()
+
+	// (9) Run test with send request
+	router.ServeHTTP(recorder, request)
+
+	// (10) Get result test and save to variable response
+	response := recorder.Result()
+
+	// (11) Read response body json
+	body, _ := io.ReadAll(response.Body)
+	// (12) Create variable responseBody with value map for response body
+	var responseBody map[string]interface{}
+	// (13) Decode json
+	json.Unmarshal(body, &responseBody)
+
+	// (14) Response status code must be 401 (UNAUTHORIZED)
+	assert.Equal(t, 401, response.StatusCode)
+	// (15) Check response body code must be 401 (UNAUTHORIZED)
+	assert.Equal(t, 401, int(responseBody["code"].(float64)))
+	// (16) Check response status must be `OK`
+	assert.Equal(t, "UNAUTHORIZED", responseBody["status"])
 
 }
