@@ -353,3 +353,56 @@ func TestGETCategoryFailed(t *testing.T) {
 	// (16) Check response status must be `NOT FOUND`
 	assert.Equal(t, "NOT FOUND", responseBody["status"])
 }
+
+// Function test for delete category success
+func TestDeleteCategorySuccess(t *testing.T) {
+	// (1) Use connetion to db
+	db := setupTestDB()
+	// (2) Run truncate table category before test
+	truncateCategory(db)
+
+	// (3) Create new data for sample update
+	// (3.1) Create database transactional
+	tx, _ := db.Begin()
+	// (3.2) Use repository
+	categoryRepository := repository.NewCategoriRepository()
+	// (3.3) Create new category
+	category := categoryRepository.Save(context.Background(), tx, domain.Category{
+		Name: "Gadget",
+	})
+	// (3.4) Commit transaction
+	tx.Commit()
+
+	// (4) Use router
+	router := setupRouter(db)
+
+	// (6) Create test request update with id
+	request := httptest.NewRequest(http.MethodDelete, "http://localhost:3000/api/categories/"+strconv.Itoa(category.Id), nil)
+	// (7) Added header content type
+	request.Header.Add("Content-Type", "application/json")
+	// (8) Added header authorize
+	request.Header.Add("X-API-Key", "RAHASIA")
+
+	// (9) Create new recorder for writer
+	recorder := httptest.NewRecorder()
+
+	// (10) Run test with send request
+	router.ServeHTTP(recorder, request)
+
+	// (11) Get result test and save to variable response
+	response := recorder.Result()
+
+	// (12) Read response body json
+	body, _ := io.ReadAll(response.Body)
+	// (13) Create variable responseBody with value map for response body
+	var responseBody map[string]interface{}
+	// (14) Decode json
+	json.Unmarshal(body, &responseBody)
+
+	// (15) Response status code must be 200 (success)
+	assert.Equal(t, 200, response.StatusCode)
+	// (16) Check response body code must be 200 (success)
+	assert.Equal(t, 200, int(responseBody["code"].(float64)))
+	// (17) Check response status must be `OK`
+	assert.Equal(t, "OK", responseBody["status"])
+}
