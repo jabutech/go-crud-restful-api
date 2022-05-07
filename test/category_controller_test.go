@@ -406,3 +406,44 @@ func TestDeleteCategorySuccess(t *testing.T) {
 	// (17) Check response status must be `OK`
 	assert.Equal(t, "OK", responseBody["status"])
 }
+
+// Function test for delete category failed
+func TestDeleteCategoryfailed(t *testing.T) {
+	// (1) Use connetion to db
+	db := setupTestDB()
+	// (2) Run truncate table category before test
+	truncateCategory(db)
+
+	// (3) Use router
+	router := setupRouter(db)
+
+	// (4) Create test request delete with id
+	request := httptest.NewRequest(http.MethodDelete, "http://localhost:3000/api/categories/404", nil)
+	// (6) Added header content type
+	request.Header.Add("Content-Type", "application/json")
+	// (7) Added header authorize
+	request.Header.Add("X-API-Key", "RAHASIA")
+
+	// (8) Create new recorder for writer
+	recorder := httptest.NewRecorder()
+
+	// (9) Run test with send request
+	router.ServeHTTP(recorder, request)
+
+	// (10) Get result test and save to variable response
+	response := recorder.Result()
+
+	// (11) Read response body json
+	body, _ := io.ReadAll(response.Body)
+	// (12) Create variable responseBody with value map for response body
+	var responseBody map[string]interface{}
+	// (13) Decode json
+	json.Unmarshal(body, &responseBody)
+
+	// (14) Response status code must be 404 (NOT FOUND)
+	assert.Equal(t, 404, response.StatusCode)
+	// (15) Check response body code must be 404 (NOT FOUND)
+	assert.Equal(t, 404, int(responseBody["code"].(float64)))
+	// (16) Check response status must be `OK`
+	assert.Equal(t, "NOT FOUND", responseBody["status"])
+}
