@@ -225,39 +225,39 @@ func TestUpdateCategoryFailed(t *testing.T) {
 	// (3.4) Commit transaction
 	tx.Commit()
 
-	// (4) Use router
+	// (5) Use router
 	router := setupRouter(db)
 
-	// (4) Create request body payload update
+	// (6) Create request body payload update
 	requestBody := strings.NewReader(`{"name": ""}`)
-	// (5) Create test request update with id
+	// (7) Create test request update with id
 	request := httptest.NewRequest(http.MethodPut, "http://localhost:3000/api/categories/"+strconv.Itoa(category.Id), requestBody)
-	// (6) Added header content type
+	// (8) Added header content type
 	request.Header.Add("Content-Type", "application/json")
-	// (7) Added header authorize
+	// (9) Added header authorize
 	request.Header.Add("X-API-Key", "RAHASIA")
 
-	// (8) Create new recorder for writer
+	// (10) Create new recorder for writer
 	recorder := httptest.NewRecorder()
 
-	// (9) Run test with send request
+	// (11) Run test with send request
 	router.ServeHTTP(recorder, request)
 
-	// (10) Get result test and save to variable response
+	// (12) Get result test and save to variable response
 	response := recorder.Result()
 
-	// (11) Read response body json
+	// (13) Read response body json
 	body, _ := io.ReadAll(response.Body)
-	// (12) Create variable responseBody with value map for response body
+	// (14) Create variable responseBody with value map for response body
 	var responseBody map[string]interface{}
-	// (13) Decode json
+	// (15) Decode json
 	json.Unmarshal(body, &responseBody)
 
-	// (14) Response status code must be 200 (success)
+	// (16) Response status code must be 400 (BAD REQUEST)
 	assert.Equal(t, 400, response.StatusCode)
-	// (15) Check response body code must be 200 (success)
+	// (17) Check response body code must be 400 (BAD REQUEST)
 	assert.Equal(t, 400, int(responseBody["code"].(float64)))
-	// (16) Check response status must be `OK`
+	// (18) Check response status must be `OK`
 	assert.Equal(t, "BAD REQUEST", responseBody["status"])
 }
 
@@ -314,4 +314,42 @@ func TestGETCategorySuccess(t *testing.T) {
 	assert.Equal(t, category.Id, int(responseBody["data"].(map[string]interface{})["id"].(float64)))
 	// (17) Check response data name must be gadget, and convert to type map
 	assert.Equal(t, "Gadget", responseBody["data"].(map[string]interface{})["name"])
+}
+
+// Function test for get category failed
+func TestGETCategoryFailed(t *testing.T) {
+	// (1) Use connetion to db
+	db := setupTestDB()
+	// (2) Run truncate table category before test
+	truncateCategory(db)
+	// (3) Use router
+	router := setupRouter(db)
+
+	// (5) Create test request update with id
+	request := httptest.NewRequest(http.MethodGet, "http://localhost:3000/api/categories/404", nil)
+	// (7) Added header authorize
+	request.Header.Add("X-API-Key", "RAHASIA")
+
+	// (8) Create new recorder for writer
+	recorder := httptest.NewRecorder()
+
+	// (9) Run test with send request
+	router.ServeHTTP(recorder, request)
+
+	// (10) Get result test and save to variable response
+	response := recorder.Result()
+
+	// (11) Read response body json
+	body, _ := io.ReadAll(response.Body)
+	// (12) Create variable responseBody with value map for response body
+	var responseBody map[string]interface{}
+	// (13) Decode json
+	json.Unmarshal(body, &responseBody)
+
+	// (14) Response status code must be 200 (Not Found)
+	assert.Equal(t, 404, response.StatusCode)
+	// (15) Check response body code must be 404 (Not Found)
+	assert.Equal(t, 404, int(responseBody["code"].(float64)))
+	// (16) Check response status must be `NOT FOUND`
+	assert.Equal(t, "NOT FOUND", responseBody["status"])
 }
