@@ -31,11 +31,7 @@ func main() {
 	router := app.NewRouter(categoryController)
 
 	// Load file .env
-	err := godotenv.Load(".env")
-	// Check if error load .env file
-	if err != nil {
-		helper.PanicErr(err)
-	}
+	godotenv.Load(".env")
 
 	// Get variable from env file
 	appPort := os.Getenv("PORT")
