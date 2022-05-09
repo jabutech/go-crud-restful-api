@@ -1,1 +1,1 @@
-web: bin/github.com/jabutech/go-crud-restful-api
+web: bin/jabutech-go
