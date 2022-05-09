@@ -1,13 +1,14 @@
 package main
 
 import (
-	"go-restful-api/app"
-	"go-restful-api/controller"
-	"go-restful-api/helper"
-	"go-restful-api/middleware"
-	"go-restful-api/repository"
-	"go-restful-api/service"
 	"net/http"
+
+	"github.com/jabutech/go-crud-restful-api/app"
+	"github.com/jabutech/go-crud-restful-api/controller"
+	"github.com/jabutech/go-crud-restful-api/helper"
+	"github.com/jabutech/go-crud-restful-api/middleware"
+	"github.com/jabutech/go-crud-restful-api/repository"
+	"github.com/jabutech/go-crud-restful-api/service"
 
 	"github.com/go-playground/validator"
 	_ "github.com/go-sql-driver/mysql"

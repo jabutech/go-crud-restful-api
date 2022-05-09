@@ -3,7 +3,8 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"go-restful-api/model/domain"
+
+	"github.com/jabutech/go-crud-restful-api/model/domain"
 )
 
 // Contract for repository category

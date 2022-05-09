@@ -1,8 +1,8 @@
 package app
 
 import (
-	"go-restful-api/controller"
-	"go-restful-api/exception"
+	"github.com/jabutech/go-crud-restful-api/controller"
+	"github.com/jabutech/go-crud-restful-api/exception"
 
 	"github.com/julienschmidt/httprouter"
 )

@@ -2,8 +2,9 @@ package app
 
 import (
 	"database/sql"
-	"go-restful-api/helper"
 	"time"
+
+	"github.com/jabutech/go-crud-restful-api/helper"
 )
 
 func NewDB() *sql.DB {

@@ -4,8 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"go-restful-api/helper"
-	"go-restful-api/model/domain"
+
+	"github.com/jabutech/go-crud-restful-api/helper"
+	"github.com/jabutech/go-crud-restful-api/model/domain"
 )
 
 type CategoryRepositoryImpl struct {

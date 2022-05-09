@@ -1,9 +1,10 @@
 package exception
 
 import (
-	"go-restful-api/helper"
-	"go-restful-api/model/web"
 	"net/http"
+
+	"github.com/jabutech/go-crud-restful-api/helper"
+	"github.com/jabutech/go-crud-restful-api/model/web"
 
 	"github.com/go-playground/validator"
 )

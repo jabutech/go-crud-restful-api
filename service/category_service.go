@@ -2,7 +2,8 @@ package service
 
 import (
 	"context"
-	"go-restful-api/model/web"
+
+	"github.com/jabutech/go-crud-restful-api/model/web"
 )
 
 type CategoryService interface {

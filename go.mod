@@ -1,4 +1,4 @@
-module go-restful-api
+module github.com/jabutech/go-crud-restful-api
 // +heroku goVersion go1.17
 go 1.17
 

@@ -1,11 +1,12 @@
 package controller
 
 import (
-	"go-restful-api/helper"
-	"go-restful-api/model/web"
-	"go-restful-api/service"
 	"net/http"
 	"strconv"
+
+	"github.com/jabutech/go-crud-restful-api/helper"
+	"github.com/jabutech/go-crud-restful-api/model/web"
+	"github.com/jabutech/go-crud-restful-api/service"
 
 	"github.com/julienschmidt/httprouter"
 )

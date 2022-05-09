@@ -3,11 +3,12 @@ package service
 import (
 	"context"
 	"database/sql"
-	"go-restful-api/exception"
-	"go-restful-api/helper"
-	"go-restful-api/model/domain"
-	"go-restful-api/model/web"
-	"go-restful-api/repository"
+
+	"github.com/jabutech/go-crud-restful-api/exception"
+	"github.com/jabutech/go-crud-restful-api/helper"
+	"github.com/jabutech/go-crud-restful-api/model/domain"
+	"github.com/jabutech/go-crud-restful-api/model/web"
+	"github.com/jabutech/go-crud-restful-api/repository"
 
 	"github.com/go-playground/validator"
 )
