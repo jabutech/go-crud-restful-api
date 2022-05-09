@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/jabutech/go-crud-restful-api/app"
 	"github.com/jabutech/go-crud-restful-api/controller"
@@ -27,6 +29,11 @@ func main() {
 
 	// Use file router
 	router := app.NewRouter(categoryController)
+
+	// Get port from env file
+	appPort := os.Getenv("PORT")
+	// port := fmt.Sprintf("localhost:%d", appPort)
+	fmt.Println(appPort)
 
 	// Create server
 	server := http.Server{
