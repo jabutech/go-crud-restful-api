@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 
@@ -11,6 +10,7 @@ import (
 	"github.com/jabutech/go-crud-restful-api/middleware"
 	"github.com/jabutech/go-crud-restful-api/repository"
 	"github.com/jabutech/go-crud-restful-api/service"
+	"github.com/joho/godotenv"
 
 	"github.com/go-playground/validator"
 	_ "github.com/go-sql-driver/mysql"
@@ -30,19 +30,26 @@ func main() {
 	// Use file router
 	router := app.NewRouter(categoryController)
 
-	// Get port from env file
+	// Load file .env
+	err := godotenv.Load(".env")
+	// Check if error load .env file
+	if err != nil {
+		helper.PanicErr(err)
+	}
+
+	// Get variable from env file
+	appHost := os.Getenv("HOST")
 	appPort := os.Getenv("PORT")
-	// port := fmt.Sprintf("localhost:%d", appPort)
-	fmt.Println(appPort)
+	addr := appHost + ":" + appPort
 
 	// Create server
 	server := http.Server{
-		Addr:    "localhost:3000",
+		Addr:    addr,
 		Handler: middleware.NewAuthMiddleware(router),
 	}
 
 	// Run server
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	// If error handle with helper
 	helper.PanicErr(err)
 
