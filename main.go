@@ -38,9 +38,11 @@ func main() {
 	}
 
 	// Get variable from env file
-	appHost := os.Getenv("HOST")
 	appPort := os.Getenv("PORT")
-	addr := appHost + ":" + appPort
+	if appPort == "" {
+		appPort = "8000"
+	}
+	addr := "localhost:" + appPort
 
 	// Create server
 	server := http.Server{
