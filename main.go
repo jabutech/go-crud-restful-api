@@ -47,7 +47,7 @@ func main() {
 	}
 
 	// Run server
-	err = server.ListenAndServe()
+	err := server.ListenAndServe()
 	// If error handle with helper
 	helper.PanicErr(err)
 
