@@ -4,13 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"go-restful-api/app"
-	"go-restful-api/controller"
-	"go-restful-api/helper"
-	"go-restful-api/middleware"
-	"go-restful-api/model/domain"
-	"go-restful-api/repository"
-	"go-restful-api/service"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -21,6 +14,13 @@ import (
 
 	"github.com/go-playground/validator"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/jabutech/go-crud-restful-api/app"
+	"github.com/jabutech/go-crud-restful-api/controller"
+	"github.com/jabutech/go-crud-restful-api/helper"
+	"github.com/jabutech/go-crud-restful-api/middleware"
+	"github.com/jabutech/go-crud-restful-api/model/domain"
+	"github.com/jabutech/go-crud-restful-api/repository"
+	"github.com/jabutech/go-crud-restful-api/service"
 	"github.com/stretchr/testify/assert"
 )
 
