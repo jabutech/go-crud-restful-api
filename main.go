@@ -34,15 +34,14 @@ func main() {
 	godotenv.Load(".env")
 
 	// Get variable from env file
-	appPort := os.Getenv("PORT")
-	if appPort == "" {
-		appPort = "8000"
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
 	}
-	addr := "localhost:" + appPort
 
 	// Create server
 	server := http.Server{
-		Addr:    addr,
+		Addr:    ":" + port,
 		Handler: middleware.NewAuthMiddleware(router),
 	}
 
