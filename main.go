@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -44,6 +45,9 @@ func main() {
 		Addr:    ":" + port,
 		Handler: middleware.NewAuthMiddleware(router),
 	}
+
+	// If no error, print message url run
+	fmt.Println("App running at http://localhost:" + port)
 
 	// Run server
 	err := server.ListenAndServe()
