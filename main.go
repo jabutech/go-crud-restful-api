@@ -8,7 +8,6 @@ import (
 	"github.com/jabutech/go-crud-restful-api/app"
 	"github.com/jabutech/go-crud-restful-api/controller"
 	"github.com/jabutech/go-crud-restful-api/helper"
-	"github.com/jabutech/go-crud-restful-api/middleware"
 	"github.com/jabutech/go-crud-restful-api/repository"
 	"github.com/jabutech/go-crud-restful-api/service"
 	"github.com/joho/godotenv"
@@ -43,7 +42,7 @@ func main() {
 	// Create server
 	server := http.Server{
 		Addr:    ":" + port,
-		Handler: middleware.NewAuthMiddleware(router),
+		Handler: router,
 	}
 
 	// If no error, print message url run
